@@ -1,3 +1,5 @@
+import {PLAYER_MOVEMENTS} from "../../utilities.js"
+
 export default class Game extends Phaser.Scene {
   constructor() {
     // key of the scene
@@ -19,50 +21,42 @@ export default class Game extends Phaser.Scene {
     this.load.image("platform", "./assets/images/platform.png");
     this.load.image("player", "./assets/images/Ninja.png");
     this.load.image("triangulo", "./assets/images/Triangulo.png");
+    this.load.image("rombo", "./assets/images/Rombo.png");
+    this.load.image("cuadrado", "./assets/images/cuadrado.png");
   }
 
   create() {
-    // create game objects
     // agregado sin fisicas
-    // add sky background
     this.add.image(400, 300, "sky").setScale(0.555);
-
     // agregado con fisicas
-    // add sprite player
-    this.player = this.physics.add.sprite(100, 500, "player");
-
-    // add platforms static group
+    this.player = this.physics.add.sprite(400, 500, "player");
     this.platformsGroup = this.physics.add.staticGroup();
     this.platformsGroup.create(400, 568, "platform").setScale(2).refreshBody();
-
-    // add shapes group
     this.shapesGroup = this.physics.add.group();
-    this.shapesGroup.create(100, 0, "triangulo");
-
-    // add collider between player and platforms
+    this.shapesGroup.create(200, 0, "triangulo").setScale(0.75).refreshBody();
+    this.shapesGroup.create(400, 0, "cuadrado").setScale(0.75).refreshBody();
+    this.shapesGroup.create(600, 0, "rombo").setScale(0.75).refreshBody();
     this.physics.add.collider(this.player, this.platformsGroup);
-
-    // add collider between platforms and shapes
     this.physics.add.collider(this.shapesGroup, this.platformsGroup);
+    this.physics.add.overlap(this.player, this.shapesGroup, this.collectShape, null, this);
 
-    // add overlap between player and shapes
-    this.physics.add.overlap(
-      this.player,
-      this.shapesGroup,
-      this.collectShape, // funcion que llama cuando player choca con shape
-      null, //dejar fijo por ahora
-      this //dejar fijo por ahora
-    );
-
-    // create cursors
+    this.cursors = this.input.keyboard.createCursorKeys();
   }
 
   update() {
-    // update game objects
-    // check if not game over or win
-    // update player movement
-    // update player jump
-  }
+    if (this.cursors.left.isDown) {
+      this.player.setVelocityX(-PLAYER_MOVEMENTS.x);
+      } else if (this.cursors.right.isDown) {
+      this.player.setVelocityX(PLAYER_MOVEMENTS.x);
+      } else {
+      this.player.setVelocityX(0);
+      }
+    if (this.cursors.up.isDown && this.player.body.touching.down) {
+      this.player.setVelocityY(-PLAYER_MOVEMENTS.y);
+      } else if (this.cursors.down.isDown){
+        this.player.setVelocityY(PLAYER_MOVEMENTS.y);
+      }
+}
 
   collectShape(jugador, figuraChocada) {
     // remove shape from screen
