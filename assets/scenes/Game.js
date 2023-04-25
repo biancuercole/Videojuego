@@ -1,4 +1,4 @@
-import {PLAYER_MOVEMENTS} from "../../utilities.js"
+import {PLAYER_MOVEMENTS, SHAPE_DELAY, SHAPES, TRIANGULO, CUADRADO, ROMBO} from "../../utils.js"
 
 export default class Game extends Phaser.Scene {
   constructor() {
@@ -20,9 +20,9 @@ export default class Game extends Phaser.Scene {
     this.load.image("sky", "./assets/images/Cielo.png");
     this.load.image("platform", "./assets/images/platform.png");
     this.load.image("player", "./assets/images/Ninja.png");
-    this.load.image("triangulo", "./assets/images/Triangulo.png");
-    this.load.image("rombo", "./assets/images/Rombo.png");
-    this.load.image("cuadrado", "./assets/images/cuadrado.png");
+    this.load.image(TRIANGULO, "./assets/images/Triangulo.png");
+    this.load.image(ROMBO, "./assets/images/Rombo.png");
+    this.load.image(CUADRADO, "./assets/images/cuadrado.png");
   }
 
   create() {
@@ -33,14 +33,18 @@ export default class Game extends Phaser.Scene {
     this.platformsGroup = this.physics.add.staticGroup();
     this.platformsGroup.create(400, 568, "platform").setScale(2).refreshBody();
     this.shapesGroup = this.physics.add.group();
-    this.shapesGroup.create(200, 0, "triangulo").setScale(0.75).refreshBody();
-    this.shapesGroup.create(400, 0, "cuadrado").setScale(0.75).refreshBody();
-    this.shapesGroup.create(600, 0, "rombo").setScale(0.75).refreshBody();
     this.physics.add.collider(this.player, this.platformsGroup);
     this.physics.add.collider(this.shapesGroup, this.platformsGroup);
     this.physics.add.overlap(this.player, this.shapesGroup, this.collectShape, null, this);
 
     this.cursors = this.input.keyboard.createCursorKeys();
+
+    this.time.addEvent ({
+      delay: SHAPE_DELAY,
+      callback: this.addShape,
+      callbackScope: this,
+      loop: true,
+    }); 
   }
 
   update() {
@@ -62,5 +66,15 @@ export default class Game extends Phaser.Scene {
     // remove shape from screen
     console.log("figura recolectada");
     figuraChocada.disableBody(true, true);
+  }
+
+  addShape(){
+    console.log(new Date());
+
+
+    const randomShape = Phaser.Math.RND.pick(SHAPES);
+    const randomX = Phaser.Math.RND.between(0, 800);
+    this.shapesGroup.create(randomX, 0, randomShape); 
+    console.log("shape is added", randomX, randomShape);
   }
 }
