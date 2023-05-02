@@ -13,6 +13,9 @@ export default class Game extends Phaser.Scene {
       "Cuadrado": { count: 0, score: 20 },
       "Rombo": { count: 0, score: 30 },
     };
+
+    this.isWinner = true;
+    this.isGameOver = true;
   }
 
   preload() {
@@ -45,9 +48,24 @@ export default class Game extends Phaser.Scene {
       callbackScope: this,
       loop: true,
     }); 
+
+    //add text score 
+    this.scoreText = this.add.text(16, 16, "T: O / C: 0 / R: 0", {
+      fontSize: "20px",
+      fill: "#FAF2F9",
+    });
   }
 
   update() {
+    //check game over or win
+    if (this.isWinner) {
+      this.scene.start("Winner");
+    }
+
+    if (this.isGameOver) {
+      this.scene.start("GameOver");
+    }
+
     if (this.cursors.left.isDown) {
       this.player.setVelocityX(-PLAYER_MOVEMENTS.x);
       } else if (this.cursors.right.isDown) {
@@ -60,7 +78,7 @@ export default class Game extends Phaser.Scene {
       } else if (this.cursors.down.isDown){
         this.player.setVelocityY(PLAYER_MOVEMENTS.y);
       }
-}
+  }
 
   collectShape(jugador, figuraChocada) {
     // remove shape from screen
@@ -71,7 +89,26 @@ export default class Game extends Phaser.Scene {
     console.log("Recolectamos un", shapeName, "!!!")
     this.shapesRecolected[shapeName].count++;
 
+    //UPDATE SCORE TEXT 
+    this.scoreText.setText(
+      "T: " + 
+        this.shapesRecolected[TRIANGULO].count + 
+        " / C: " + 
+        this.shapesRecolected[CUADRADO].count + 
+        " / R: " + 
+        this.shapesRecolected[ROMBO].count
+    );
     console.log(this.shapesRecolected);
+    //check if winner 
+    //take two of each shape
+    if (
+      this.shapesRecolected[TRIANGULO].count >= 2 &&
+      this.shapesRecolected[CUADRADO].count >= 2 &&
+      this.shapesRecolected[ROMBO].count >= 2
+    ) {
+      this.isWinner = true;
+    }
+
   }
 
   addShape(){
