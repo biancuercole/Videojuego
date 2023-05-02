@@ -8,11 +8,11 @@ export default class Game extends Phaser.Scene {
   }
 
   init() {
-    let shapesRecolected = [
-      { type: "Triangulo", count: 0 },
-      { type: "Cuadrado", count: 0 },
-      { type: "Rombo", count: 0 },
-    ];
+    this.shapesRecolected = {
+      "Triangulo": { count: 0, score: 10 },
+      "Cuadrado": { count: 0, score: 20 },
+      "Rombo": { count: 0, score: 30 },
+    };
   }
 
   preload() {
@@ -66,6 +66,12 @@ export default class Game extends Phaser.Scene {
     // remove shape from screen
     console.log("figura recolectada");
     figuraChocada.disableBody(true, true);
+
+    const shapeName = figuraChocada.texture.key;
+    console.log("Recolectamos un", shapeName, "!!!")
+    this.shapesRecolected[shapeName].count++;
+
+    console.log(this.shapesRecolected);
   }
 
   addShape(){
