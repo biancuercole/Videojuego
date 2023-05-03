@@ -2,11 +2,11 @@ import {PLAYER_MOVEMENTS, SHAPE_DELAY, SHAPES, TRIANGULO, CUADRADO, ROMBO} from 
 
 export default class Game extends Phaser.Scene {
   constructor() {
-    // key of the scene
-    // the key will be used to start the scene by other scenes
+    // le da comienzo a la escena, el nombre en comillas es el que se usa para citar de otras paginas
     super("game");
   }
 
+  //Inicia valores
   init() {
     this.shapesRecolected = {
       "Triangulo": { count: 0, score: 10 },
@@ -14,8 +14,9 @@ export default class Game extends Phaser.Scene {
       "Rombo": { count: 0, score: 30 },
     };
 
-    this.isWinner = true;
-    this.isGameOver = true;
+    this.timer = 30
+    this.isWinner = false;
+    this.isGameOver = false;
   }
 
   preload() {
@@ -31,7 +32,7 @@ export default class Game extends Phaser.Scene {
   create() {
     // agregado sin fisicas
     this.add.image(400, 300, "sky").setScale(0.555);
-    // agregado con fisicas
+    // agregado con fisicas 
     this.player = this.physics.add.sprite(400, 500, "player");
     this.platformsGroup = this.physics.add.staticGroup();
     this.platformsGroup.create(400, 568, "platform").setScale(2).refreshBody();
@@ -54,6 +55,18 @@ export default class Game extends Phaser.Scene {
       fontSize: "20px",
       fill: "#FAF2F9",
     });
+
+    this.time.addEvent ({
+      delay: 1000,
+      callback: this.updateTimer, 
+      callbackScope: this,
+      loop: true,
+    })
+
+    this.time = this.add.text(700, 16, "tiempo: " + this.timer, {
+      fontSize: "16px",
+      fill: "#FAF2F9",
+    })
   }
 
   update() {
@@ -63,7 +76,7 @@ export default class Game extends Phaser.Scene {
     }
 
     if (this.isGameOver) {
-      this.scene.start("GameOver");
+      this.scene.start("gameOver");
     }
 
     if (this.cursors.left.isDown) {
@@ -120,4 +133,18 @@ export default class Game extends Phaser.Scene {
     this.shapesGroup.create(randomX, 0, randomShape); 
     console.log("shape is added", randomX, randomShape);
   }
+
+  updateTimer(){
+    this.timer--
+    console.log(this.timer)
+    this.time.setText(
+    "Tiempo: " + this.timer
+    )
+    if (this.timer == 0) {
+      this.isGameOver = true;
+    }
+  }
+
+  
+
 }

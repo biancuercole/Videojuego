@@ -10,7 +10,7 @@ export default class Winner extends Phaser.Scene {
 
 
     create () {
-        this.winText = this.add.text (320, 250, "Winner", {
+        this.winText = this.add.text (325, 250, "Winner", {
             fontSize: "50px",
             fill: "#FAF2F9",
         })
