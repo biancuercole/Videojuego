@@ -1,4 +1,4 @@
-import {PLAYER_MOVEMENTS, SHAPE_DELAY, SHAPES, TRIANGULO, CUADRADO, ROMBO} from "../../utils.js"
+import {PLAYER_MOVEMENTS, SHAPE_DELAY, SHAPES, TRIANGULO, CUADRADO, ROMBO, TIME_DELAY} from "../../utils.js"
 
 export default class Game extends Phaser.Scene {
   constructor() {
@@ -52,20 +52,24 @@ export default class Game extends Phaser.Scene {
 
     //add text score 
     this.scoreText = this.add.text(16, 16, "T: O / C: 0 / R: 0", {
-      fontSize: "20px",
-      fill: "#FAF2F9",
+      fontSize: "16px",
+      fill: "#E0CDF8",
+      fontFamily: "Verdana",
     });
 
     this.time.addEvent ({
-      delay: 1000,
+      delay: TIME_DELAY,
       callback: this.updateTimer, 
       callbackScope: this,
       loop: true,
     })
 
-    this.time = this.add.text(700, 16, "tiempo: " + this.timer, {
+    this.time = this.add.text(690, 16, "Tiempo: " + this.timer, {
       fontSize: "16px",
-      fill: "#FAF2F9",
+      fill: "#E0CDF8",
+      fontWeight: "Bolder",
+      fontFamily: "Verdana",
+      backgroundColor: "#8E4EDE",
     })
   }
 
@@ -126,8 +130,6 @@ export default class Game extends Phaser.Scene {
 
   addShape(){
     console.log(new Date());
-
-
     const randomShape = Phaser.Math.RND.pick(SHAPES);
     const randomX = Phaser.Math.RND.between(0, 800);
     this.shapesGroup.create(randomX, 0, randomShape); 
@@ -138,13 +140,12 @@ export default class Game extends Phaser.Scene {
     this.timer--
     console.log(this.timer)
     this.time.setText(
-    "Tiempo: " + this.timer
+    "Tiempo: " + this.timer,
     )
     if (this.timer == 0) {
       this.isGameOver = true;
     }
   }
-
   
 
 }
