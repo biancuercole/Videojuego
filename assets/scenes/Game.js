@@ -14,7 +14,7 @@ export default class Game extends Phaser.Scene {
       "Rombo": { count: 0, score: 30 },
     };
 
-    this.timer = 30
+    this.timer = 30;
     this.isWinner = false;
     this.isGameOver = false;
   }
@@ -104,16 +104,17 @@ export default class Game extends Phaser.Scene {
 
     const shapeName = figuraChocada.texture.key;
     console.log("Recolectamos un", shapeName, "!!!")
-    this.shapesRecolected[shapeName].count++;
+    this.shapesRecolected[shapeName].score++;
+    
 
     //UPDATE SCORE TEXT 
     this.scoreText.setText(
       "T: " + 
-        this.shapesRecolected[TRIANGULO].count + 
+        this.shapesRecolected[TRIANGULO].score + 
         " / C: " + 
-        this.shapesRecolected[CUADRADO].count + 
+        this.shapesRecolected[CUADRADO].score +  
         " / R: " + 
-        this.shapesRecolected[ROMBO].count
+        this.shapesRecolected[ROMBO].score
     );
     console.log(this.shapesRecolected);
     //check if winner 
