@@ -9,11 +9,12 @@ export default class Game extends Phaser.Scene {
   //Inicia valores
   init() {
     this.shapesRecolected = {
-      "Triangulo": { count: 0, score: 10 },
-      "Cuadrado": { count: 0, score: 20 },
-      "Rombo": { count: 0, score: 30 },
+      "Triangulo": { count: 0, puntos: 10 },
+      "Cuadrado": { count: 0, puntos: 20 },
+      "Rombo": { count: 0, puntos: 30 },
     };
 
+    this.score = 0;
     this.timer = 30;
     this.isWinner = false;
     this.isGameOver = false;
@@ -51,7 +52,7 @@ export default class Game extends Phaser.Scene {
     }); 
 
     //add text score 
-    this.scoreText = this.add.text(16, 16, "T: O / C: 0 / R: 0", {
+    this.scoreText = this.add.text(16, 16, "T: O / C: 0 / R: 0 / SCORE: ", {
       fontSize: "16px",
       fill: "#E0CDF8",
       fontFamily: "Verdana",
@@ -104,25 +105,25 @@ export default class Game extends Phaser.Scene {
 
     const shapeName = figuraChocada.texture.key;
     console.log("Recolectamos un", shapeName, "!!!")
-    this.shapesRecolected[shapeName].score++;
+    this.score += this.shapesRecolected[shapeName].puntos; 
+    this.shapesRecolected[shapeName].count++;
     
 
     //UPDATE SCORE TEXT 
     this.scoreText.setText(
       "T: " + 
-        this.shapesRecolected[TRIANGULO].score + 
+        this.shapesRecolected[TRIANGULO].count + 
         " / C: " + 
-        this.shapesRecolected[CUADRADO].score +  
+        this.shapesRecolected[CUADRADO].count +  
         " / R: " + 
-        this.shapesRecolected[ROMBO].score
+        this.shapesRecolected[ROMBO].count +
+        " / SCORE: " + this.score 
     );
     console.log(this.shapesRecolected);
     //check if winner 
     //take two of each shape
     if (
-      this.shapesRecolected[TRIANGULO].count >= 2 &&
-      this.shapesRecolected[CUADRADO].count >= 2 &&
-      this.shapesRecolected[ROMBO].count >= 2
+      this.score >= 100
     ) {
       this.isWinner = true;
     }
