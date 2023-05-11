@@ -37,6 +37,8 @@ export default class Game extends Phaser.Scene {
     this.player = this.physics.add.sprite(400, 500, "player");
     this.platformsGroup = this.physics.add.staticGroup();
     this.platformsGroup.create(400, 568, "platform").setScale(2).refreshBody();
+    this.platformsGroup.create(50, 420, "platform").setScale(1).refreshBody();
+    this.platformsGroup.create(700, 320, "platform").setScale(1).refreshBody();
     this.shapesGroup = this.physics.add.group();
     this.physics.add.collider(this.player, this.platformsGroup);
     this.physics.add.collider(this.shapesGroup, this.platformsGroup);
