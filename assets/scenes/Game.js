@@ -1,4 +1,4 @@
-import {PLAYER_MOVEMENTS, SHAPE_DELAY, SHAPES, TRIANGULO, CUADRADO, ROMBO, TIME_DELAY} from "../../utils.js"
+import {PLAYER_MOVEMENTS, SHAPE_DELAY, SHAPES, TRIANGULO, CUADRADO, ROMBO, TIME_DELAY, CRUZ} from "../../utils.js"
 
 export default class Game extends Phaser.Scene {
   constructor() {
@@ -12,6 +12,7 @@ export default class Game extends Phaser.Scene {
       "Triangulo": { count: 0, puntos: 10 },
       "Cuadrado": { count: 0, puntos: 20 },
       "Rombo": { count: 0, puntos: 30 },
+      "Cruz": {count: 0, puntos: -10},
     };
 
     this.score = 0;
@@ -28,6 +29,7 @@ export default class Game extends Phaser.Scene {
     this.load.image(TRIANGULO, "./assets/images/Triangulo.png");
     this.load.image(ROMBO, "./assets/images/Rombo.png");
     this.load.image(CUADRADO, "./assets/images/cuadrado.png");
+    this.load.image(CRUZ, "./assets/images/Cruz.png");
   }
 
   create() {
