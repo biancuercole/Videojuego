@@ -121,8 +121,9 @@ export default class Game extends Phaser.Scene {
     );
     console.log(this.shapesRecolected);
     //check if winner 
+    //take two of each shape
     if (
-      this.score > 100
+      this.score >= 100
     ) {
       this.isWinner = true;
     }
