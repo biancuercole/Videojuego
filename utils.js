@@ -2,7 +2,7 @@ export { PLAYER_MOVEMENTS, SHAPE_DELAY, SHAPES, TRIANGULO, CUADRADO, ROMBO, TIME
 //crear enumeracion
 const PLAYER_MOVEMENTS = {
     x: 250 ,
-    y: 330 ,
+    y: 350 ,
 }
 
 const SHAPE_DELAY = 3000;
