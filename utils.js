@@ -1,4 +1,4 @@
-export { PLAYER_MOVEMENTS, SHAPE_DELAY, SHAPES, TRIANGULO, CUADRADO, ROMBO, TIME_DELAY};
+export { PLAYER_MOVEMENTS, SHAPE_DELAY, SHAPES, TRIANGULO, CUADRADO, ROMBO, TIME_DELAY, CRUZ};
 //crear enumeracion
 const PLAYER_MOVEMENTS = {
     x: 250 ,
@@ -10,8 +10,9 @@ const TIME_DELAY = 1000;
 const TRIANGULO = "Triangulo";
 const CUADRADO = "Cuadrado";
 const ROMBO = "Rombo";
+const CRUZ = "Cruz";
 
-const SHAPES = [TRIANGULO, CUADRADO, ROMBO];
+const SHAPES = [TRIANGULO, CUADRADO, ROMBO, CRUZ];
 
 
 
