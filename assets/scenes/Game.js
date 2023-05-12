@@ -43,7 +43,7 @@ export default class Game extends Phaser.Scene {
     this.platformsGroup.create(700, 320, "platform").setScale(1).refreshBody();
     this.shapesGroup = this.physics.add.group();
     this.physics.add.collider(this.player, this.platformsGroup);
-    this.physics.add.collider(this.shapesGroup, this.platformsGroup);
+    this.physics.add.overlap(this.shapesGroup, this.platformsGroup, this.shapeFloor, null, this);
     this.physics.add.overlap(this.player, this.shapesGroup, this.collectShape, null, this);
 
     this.cursors = this.input.keyboard.createCursorKeys();
@@ -131,8 +131,12 @@ export default class Game extends Phaser.Scene {
     ) {
       this.isWinner = true;
     }
-
   }
+
+  shapeFloor(shape, plataforma) {
+    shape.disableBody(true, true);
+  }
+  
 
   addShape(){
     console.log(new Date());
