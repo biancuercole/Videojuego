@@ -14,6 +14,7 @@ export default class Game extends Phaser.Scene {
       "Rombo": { count: 0, puntos: 30 },
     };
 
+    this.score = 0;
     this.timer = 30;
     this.isWinner = false;
     this.isGameOver = false;
@@ -51,7 +52,7 @@ export default class Game extends Phaser.Scene {
     }); 
 
     //add text score 
-    this.scoreText = this.add.text(16, 16, "T: O / C: 0 / R: 0 ", {
+    this.scoreText = this.add.text(16, 16, "T: O / C: 0 / R: 0 / SCORE: ", {
       fontSize: "16px",
       fill: "#E0CDF8",
       fontFamily: "Verdana",
@@ -101,6 +102,7 @@ export default class Game extends Phaser.Scene {
     // remove shape from screen
     figuraChocada.disableBody(true, true);
     const shapeName = figuraChocada.texture.key;
+    this.score += this.shapesRecolected[shapeName].puntos;
     this.shapesRecolected[shapeName].count++;
     
 
@@ -111,7 +113,8 @@ export default class Game extends Phaser.Scene {
         " / C: " + 
         this.shapesRecolected[CUADRADO].count +  
         " / R: " + 
-        this.shapesRecolected[ROMBO].count
+        this.shapesRecolected[ROMBO].count + 
+        " / SCORE: " + this.score
     );
     console.log(this.shapesRecolected);
     //check if winner 
