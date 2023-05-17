@@ -10,11 +10,16 @@ export default class Winner extends Phaser.Scene {
 
 
     create () {
-        this.winText = this.add.text (325, 250, "Winner", {
+        this.winText = this.add.text (this.cameras.main.centerX, this.cameras.main.centerY, "¡Ganaste!", {
+            fontFamily: "Arial",
+            fontType: "bold",
             fontSize: "50px",
-            fill: "#FAF2F9",
-        })
+            fill: "#90E04D",
+            align: "center",
+        });
+
     }
+
 
 
     update () {}

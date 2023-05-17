@@ -56,7 +56,7 @@ export default class Game extends Phaser.Scene {
     }); 
 
     //add text score 
-    this.scoreText = this.add.text(16, 16, "SCORE: ", {
+    this.scoreText = this.add.text(16, 16, " T: / C: / R: / SCORE: ", {
       fontSize: "16px",
       fill: "#E0CDF8",
       fontFamily: "Verdana",
@@ -110,25 +110,25 @@ export default class Game extends Phaser.Scene {
     const scoreNow = this.shapesRecolected[shapeName].puntos * percentage;
     this.score += scoreNow;
     this.shapesRecolected[shapeName].count++;
-    
 
     //UPDATE SCORE TEXT 
     this.scoreText.setText(
-        "SCORE: " + this.score
+        " T: " + this.shapesRecolected[TRIANGULO].count + 
+        " / C: " + this.shapesRecolected[CUADRADO].count +
+        " / R: " + this.shapesRecolected[ROMBO].count +
+        " SCORE: " + this.score
     )
     //check if winner 
     //take two of each shape
     if (
-      this.score >= 100
+      this.score >= 100 &&
+      this.shapesRecolected.Triangulo.count == 2 && 
+      this.shapesRecolected.Cuadrado.count == 2 && 
+      this.shapesRecolected.Rombo.count == 2
     ) {
       this.isWinner = true;
     }
   }
-
-  shapeFloor(shape, plataforma) {
-    shape.disableBody(true, true);
-  }
-  
 
   addShape(){
     const randomShape = Phaser.Math.RND.pick(SHAPES);
