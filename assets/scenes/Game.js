@@ -1,4 +1,4 @@
-import {PLAYER_MOVEMENTS, SHAPE_DELAY, SHAPES, TRIANGULO, CUADRADO, ROMBO, TIME_DELAY, POINTS_PERCENTAGE, POINTS_PERCENTAGE_VALUE_START} from "../../utils.js"
+import {PLAYER_MOVEMENTS, SHAPE_DELAY, SHAPES, TRIANGULO, CUADRADO, ROMBO, CRUZ, TIME_DELAY, POINTS_PERCENTAGE, POINTS_PERCENTAGE_VALUE_START} from "../../utils.js"
 
 export default class Game extends Phaser.Scene {
   constructor() {
@@ -12,10 +12,11 @@ export default class Game extends Phaser.Scene {
       "Triangulo": { count: 0, puntos: 10 },
       "Cuadrado": { count: 0, puntos: 20 },
       "Rombo": { count: 0, puntos: 30 },
+      "Cruz": {count: 0, puntos: -10},
     };
 
     this.score = 0;
-    this.timer = 30;
+    this.timer = 120;
     this.isWinner = false;
     this.isGameOver = false;
   }
@@ -28,6 +29,7 @@ export default class Game extends Phaser.Scene {
     this.load.image(TRIANGULO, "./assets/images/Triangulo.png");
     this.load.image(ROMBO, "./assets/images/Rombo.png");
     this.load.image(CUADRADO, "./assets/images/cuadrado.png");
+    this.load.image(CRUZ, "./assets/images/Cruz.png");
   }
 
   create() {
@@ -54,7 +56,7 @@ export default class Game extends Phaser.Scene {
     }); 
 
     //add text score 
-    this.scoreText = this.add.text(16, 16, "T: 0 / C: 0 / R: 0 / SCORE: ", {
+    this.scoreText = this.add.text(16, 16, "SCORE: ", {
       fontSize: "16px",
       fill: "#E0CDF8",
       fontFamily: "Verdana",
@@ -112,13 +114,7 @@ export default class Game extends Phaser.Scene {
 
     //UPDATE SCORE TEXT 
     this.scoreText.setText(
-      "T: " + 
-        this.shapesRecolected[TRIANGULO].count + 
-        " / C: " + 
-        this.shapesRecolected[CUADRADO].count +  
-        " / R: " + 
-        this.shapesRecolected[ROMBO].count + 
-        " / SCORE: " + this.score
+        "SCORE: " + this.score
     )
     //check if winner 
     //take two of each shape
