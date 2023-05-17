@@ -1,4 +1,4 @@
-import {PLAYER_MOVEMENTS, SHAPE_DELAY, SHAPES, TRIANGULO, CUADRADO, ROMBO, TIME_DELAY, CRUZ} from "../../utils.js"
+import {PLAYER_MOVEMENTS, SHAPE_DELAY, SHAPES, TRIANGULO, CUADRADO, ROMBO, TIME_DELAY} from "../../utils.js"
 
 export default class Game extends Phaser.Scene {
   constructor() {
@@ -12,10 +12,8 @@ export default class Game extends Phaser.Scene {
       "Triangulo": { count: 0, puntos: 10 },
       "Cuadrado": { count: 0, puntos: 20 },
       "Rombo": { count: 0, puntos: 30 },
-      "Cruz": {count: 0, puntos: -10},
     };
 
-    this.score = 0;
     this.timer = 30;
     this.isWinner = false;
     this.isGameOver = false;
@@ -29,7 +27,6 @@ export default class Game extends Phaser.Scene {
     this.load.image(TRIANGULO, "./assets/images/Triangulo.png");
     this.load.image(ROMBO, "./assets/images/Rombo.png");
     this.load.image(CUADRADO, "./assets/images/cuadrado.png");
-    this.load.image(CRUZ, "./assets/images/Cruz.png");
   }
 
   create() {
@@ -39,11 +36,9 @@ export default class Game extends Phaser.Scene {
     this.player = this.physics.add.sprite(400, 500, "player");
     this.platformsGroup = this.physics.add.staticGroup();
     this.platformsGroup.create(400, 568, "platform").setScale(2).refreshBody();
-    this.platformsGroup.create(50, 420, "platform").setScale(1).refreshBody();
-    this.platformsGroup.create(700, 320, "platform").setScale(1).refreshBody();
     this.shapesGroup = this.physics.add.group();
     this.physics.add.collider(this.player, this.platformsGroup);
-    this.physics.add.overlap(this.shapesGroup, this.platformsGroup, this.shapeFloor, null, this);
+    this.physics.add.collider(this.shapesGroup, this.platformsGroup);
     this.physics.add.overlap(this.player, this.shapesGroup, this.collectShape, null, this);
 
     this.cursors = this.input.keyboard.createCursorKeys();
@@ -56,7 +51,7 @@ export default class Game extends Phaser.Scene {
     }); 
 
     //add text score 
-    this.scoreText = this.add.text(16, 16, "T: O / C: 0 / R: 0 / SCORE: ", {
+    this.scoreText = this.add.text(16, 16, "T: O / C: 0 / R: 0 ", {
       fontSize: "16px",
       fill: "#E0CDF8",
       fontFamily: "Verdana",
@@ -104,12 +99,8 @@ export default class Game extends Phaser.Scene {
 
   collectShape(jugador, figuraChocada) {
     // remove shape from screen
-    console.log("figura recolectada");
     figuraChocada.disableBody(true, true);
-
     const shapeName = figuraChocada.texture.key;
-    console.log("Recolectamos un", shapeName, "!!!")
-    this.score += this.shapesRecolected[shapeName].puntos; 
     this.shapesRecolected[shapeName].count++;
     
 
@@ -120,8 +111,7 @@ export default class Game extends Phaser.Scene {
         " / C: " + 
         this.shapesRecolected[CUADRADO].count +  
         " / R: " + 
-        this.shapesRecolected[ROMBO].count +
-        " / SCORE: " + this.score 
+        this.shapesRecolected[ROMBO].count
     );
     console.log(this.shapesRecolected);
     //check if winner 
