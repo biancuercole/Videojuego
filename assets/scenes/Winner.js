@@ -6,22 +6,35 @@ export default class Winner extends Phaser.Scene {
     initi () {}
 
 
-    preload () {}
-
+    preload () {
+    this.load.image("sky", "./assets/images/Cielo.png");
+    this.load.image("platform", "./assets/images/platform.png");
+    this.load.image("player", "./assets/images/Ninja.png");
+    }
 
     create () {
-        this.winText = this.add.text (this.cameras.main.centerX, this.cameras.main.centerY, "¡Ganaste!", {
+        this.add.image(400, 300, "sky").setScale(0.555);
+        this.winText = this.add.text (300, 260, "¡Ganaste!", {
             fontFamily: "Arial",
             fontType: "bold",
             fontSize: "50px",
-            fill: "#90E04D",
+            fill: "#E0CDF8",
             align: "center",
+            backgroundColor: "#8E4EDE",
         });
+        this.player = this.physics.add.sprite(415, 450, "player");
+        this.platformG = this.physics.add.staticGroup();
+        this.platformG.create(400,580, "platform").setScale(2).refreshBody();
+        this.physics.add.collider(this.platformG, this.player);
+        this.player.setBounce(1);
+        this.player.setVelocityY(-200);
 
     }
 
 
 
     update () {}
+
+    
 }
 

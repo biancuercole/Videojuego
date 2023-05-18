@@ -16,8 +16,8 @@ export default class Game extends Phaser.Scene {
     };
 
     this.score = 0;
-    this.timer = 120;
-    this.isWinner = false;
+    this.timer = 30;
+    this.isWinner = true;
     this.isGameOver = false;
   }
 
@@ -122,9 +122,9 @@ export default class Game extends Phaser.Scene {
     //take two of each shape
     if (
       this.score >= 100 &&
-      this.shapesRecolected.Triangulo.count == 2 && 
-      this.shapesRecolected.Cuadrado.count == 2 && 
-      this.shapesRecolected.Rombo.count == 2
+      this.shapesRecolected.Triangulo.count >= 2 && 
+      this.shapesRecolected.Cuadrado.count >= 2 && 
+      this.shapesRecolected.Rombo.count >= 2
     ) {
       this.isWinner = true;
     }
