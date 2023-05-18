@@ -17,12 +17,13 @@ export default class Game extends Phaser.Scene {
 
     this.score = 0;
     this.timer = 30;
+    //el nivel arranca con ambas condiciones como falsas
     this.isWinner = false;
     this.isGameOver = false;
   }
 
+      // cargar fondo, plataformas, formas, jugador
   preload() {
-    // cargar fondo, plataformas, formas, jugador
     this.load.image("sky", "./assets/images/Cielo.png");
     this.load.image("platform", "./assets/images/platform.png");
     this.load.image("player", "./assets/images/Ninja.png");
@@ -37,39 +38,27 @@ export default class Game extends Phaser.Scene {
     // agregado sin fisicas
     this.add.image(400, 300, "sky").setScale(0.555);
     // agregado con fisicas 
-    this.player = this.physics.add.sprite(400, 500, "player");
-    this.platformsGroup = this.physics.add.staticGroup();
+    this.player = this.physics.add.sprite(400, 500, "player"); //objeto individual que aparece una sola vez
+    this.platformsGroup = this.physics.add.staticGroup(); //objetos que aparecen mas de una vez pero quedan quietos
     this.platformsGroup.create(400, 568, "platform").setScale(2).refreshBody();
     this.platformsGroup.create(50, 390, "platform").setScale(1).refreshBody();
     this.platformsGroup.create(700, 300, "platform").setScale(1).refreshBody();
-    this.shapesGroup = this.physics.add.group();
-    this.physics.add.collider(this.player, this.platformsGroup);
+    this.shapesGroup = this.physics.add.group(); //objetos que aparecen de una vez y son dinámicos
+    this.physics.add.collider(this.player, this.platformsGroup); //solo hace que choquen dos objetos
     this.physics.add.collider(this.shapesGroup, this.platformsGroup);
-    this.physics.add.overlap(this.player, this.shapesGroup, this.collectShape, null, this);
+    this.physics.add.overlap(this.player, this.shapesGroup, this.collectShape, null, this); //hace que cuando chocan dos objetos se ejecute otra accion
     this.physics.add.overlap(this.shapesGroup, this.platformsGroup, this.reduce, null, this);
     this.cursors = this.input.keyboard.createCursorKeys();
 
+    //evento para agregar formas
     this.time.addEvent ({
-      delay: SHAPE_DELAY,
-      callback: this.addShape,
+      delay: SHAPE_DELAY, //cada cuanto ocurre el evento
+      callback: this.addShape, //es la funcion que se ejecuta cuando ocurre este evento
       callbackScope: this,
       loop: true,
     }); 
 
-    this.time.addEvent ({
-      delay: 7000,
-      callback: this.dropBomb,
-      callbackScope: this,
-      loop: true,
-    })
-
-    //add text score 
-    this.scoreText = this.add.text(16, 16, " T: / C: / R: / SCORE: ", {
-      fontSize: "16px",
-      fill: "#E0CDF8",
-      fontFamily: "Verdana",
-    });
-
+    //evento para temporizador
     this.time.addEvent ({
       delay: TIME_DELAY,
       callback: this.updateTimer, 
@@ -77,6 +66,22 @@ export default class Game extends Phaser.Scene {
       loop: true,
     })
 
+    //evento para agregar la bomba 
+    this.time.addEvent ({
+      delay: 7000,
+      callback: this.dropBomb,
+      callbackScope: this,
+      loop: true,
+    })
+
+    //agrega el texto del puntaje
+    this.scoreText = this.add.text(16, 16, " T: 0 / C: 0 / R: 0 / SCORE: 0 ", {
+      fontSize: "16px",
+      fill: "#E0CDF8",
+      fontFamily: "Verdana",
+    });
+
+    //texto de temporizador
     this.time = this.add.text(690, 16, "Tiempo: " + this.timer, {
       fontSize: "16px",
       fill: "#E0CDF8",
@@ -91,11 +96,11 @@ export default class Game extends Phaser.Scene {
     if (this.isWinner) {
       this.scene.start("Winner");
     }
-
     if (this.isGameOver) {
       this.scene.start("gameOver");
     }
 
+    //controles del teclado
     if (this.cursors.left.isDown) {
       this.player.setVelocityX(-PLAYER_MOVEMENTS.x);
       } else if (this.cursors.right.isDown) {
@@ -110,6 +115,7 @@ export default class Game extends Phaser.Scene {
       }
   }
 
+  //acciones que se ejecutan con overlaps
   collectShape(jugador, figuraChocada) {
     // remove shape from screen
     figuraChocada.disableBody(true, true);
@@ -138,6 +144,37 @@ export default class Game extends Phaser.Scene {
     }
   }
 
+  collectBomb(bomb, player){
+    bomb.disableBody(true, true);
+  }
+
+  reduce(shape, platform){
+    const newPercentage = shape.getData(POINTS_PERCENTAGE) - 0.25;
+    console.log(shape.texture.key, newPercentage);
+    shape.setData(POINTS_PERCENTAGE, newPercentage);
+    if (newPercentage <= 0) {
+      shape.disableBody(true,true);
+      return;
+    }
+
+    const text = this.add.text(shape.body.position.x+10, shape.body.position.y, "-25%", {
+      fontSize: "22px",
+      fontStyle: "bold",
+      fill: "red",
+    });
+    setTimeout(() => {
+      text.destroy();
+    }, 200);
+  }
+
+  defeat(bomb, platform) {
+    if (this.defeat){
+      this.isGameOver = true;
+    }
+  }
+
+
+  //callbacks de eventos
   addShape(){
     const randomShape = Phaser.Math.RND.pick(SHAPES);
     const randomX = Phaser.Math.RND.between(0, 800);
@@ -156,16 +193,6 @@ export default class Game extends Phaser.Scene {
     this.physics.add.overlap(bomb, this.player, this.collectBomb, null, this);
   }
 
-  defeat(bomb, platform) {
-    if (this.defeat){
-      this.isGameOver = true;
-    }
-  }
-
-  collectBomb(bomb, player){
-    bomb.disableBody(true, true);
-  }
-
   updateTimer(){
     this.timer--
     console.log(this.timer)
@@ -177,22 +204,4 @@ export default class Game extends Phaser.Scene {
     }
   }
   
-  reduce(shape, platform){
-    const newPercentage = shape.getData(POINTS_PERCENTAGE) - 0.25;
-    console.log(shape.texture.key, newPercentage);
-    shape.setData(POINTS_PERCENTAGE, newPercentage);
-    if (newPercentage <= 0) {
-      shape.disableBody(true,true);
-      return;
-  }
-
-  const text = this.add.text(shape.body.position.x+10, shape.body.position.y, "-25%", {
-    fontSize: "22px",
-    fontStyle: "bold",
-    fill: "red",
-  });
-  setTimeout(() => {
-    text.destroy();
-  }, 200);
-  }
 }
