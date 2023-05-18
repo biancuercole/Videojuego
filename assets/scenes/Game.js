@@ -45,9 +45,9 @@ export default class Game extends Phaser.Scene {
     this.platformsGroup.create(700, 300, "platform").setScale(1).refreshBody();
     this.shapesGroup = this.physics.add.group();
     this.physics.add.collider(this.player, this.platformsGroup);
-    this.physics.add.collider(this.bomb, this.platformsGroup);
     this.physics.add.collider(this.shapesGroup, this.platformsGroup);
     this.physics.add.overlap(this.player, this.shapesGroup, this.collectShape, null, this);
+    this.physics.add.overlap(this.bomb, this.platformsGroup, this.defeat, null, this);
     this.physics.add.overlap(this.shapesGroup, this.platformsGroup, this.reduce, null, this);
     this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -130,6 +130,12 @@ export default class Game extends Phaser.Scene {
       this.shapesRecolected.Rombo.count >= 2
     ) {
       this.isWinner = true;
+    }
+  }
+
+  defeat(bomba, plataforma){
+    if(this.defeat){
+      this.isGameOver = true;
     }
   }
 
