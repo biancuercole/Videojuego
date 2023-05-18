@@ -3,7 +3,8 @@ export default class Winner extends Phaser.Scene {
         super ("Winner");
     }
 
-    initi () {}
+    init() {
+    }
 
 
     preload () {
@@ -31,10 +32,7 @@ export default class Winner extends Phaser.Scene {
 
     }
 
-
-
     update () {}
-
     
 }
 

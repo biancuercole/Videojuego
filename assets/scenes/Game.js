@@ -17,7 +17,7 @@ export default class Game extends Phaser.Scene {
 
     this.score = 0;
     this.timer = 30;
-    this.isWinner = true;
+    this.isWinner = false;
     this.isGameOver = false;
   }
 
@@ -167,5 +167,5 @@ export default class Game extends Phaser.Scene {
   setTimeout(() => {
     text.destroy();
   }, 200);
-}
+  }
 }
