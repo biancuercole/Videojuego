@@ -30,6 +30,7 @@ export default class Game extends Phaser.Scene {
     this.load.image(ROMBO, "./assets/images/Rombo.png");
     this.load.image(CUADRADO, "./assets/images/cuadrado.png");
     this.load.image(CRUZ, "./assets/images/Cruz.png");
+    this.load.image("bomba", "./assets/images/Bomba.png");
   }
 
   create() {
@@ -42,15 +43,24 @@ export default class Game extends Phaser.Scene {
     this.platformsGroup.create(50, 390, "platform").setScale(1).refreshBody();
     this.platformsGroup.create(700, 300, "platform").setScale(1).refreshBody();
     this.shapesGroup = this.physics.add.group();
+    this.bomba = this.physics.add.group();
     this.physics.add.collider(this.player, this.platformsGroup);
     this.physics.add.collider(this.shapesGroup, this.platformsGroup);
     this.physics.add.overlap(this.player, this.shapesGroup, this.collectShape, null, this);
     this.physics.add.overlap(this.shapesGroup, this.platformsGroup, this.reduce, null, this);
+    this.physics.add.overlap(this.bomba, this.platformsGroup, this.defeat, null, this);
     this.cursors = this.input.keyboard.createCursorKeys();
 
     this.time.addEvent ({
       delay: SHAPE_DELAY,
       callback: this.addShape,
+      callbackScope: this,
+      loop: true,
+    }); 
+
+    this.time.addEvent ({
+      delay: 5000,
+      callback: this.addBomba,
       callbackScope: this,
       loop: true,
     }); 
@@ -139,6 +149,19 @@ export default class Game extends Phaser.Scene {
     .setData(POINTS_PERCENTAGE, POINTS_PERCENTAGE_VALUE_START);
     console.log("shape is added", randomX, randomShape);
   }
+
+  addBomba(){
+    const randomB = Phaser.Math.RND.pick("bomba");
+    const randomX = Phaser.Math.RND.between(0, 800);
+    this.bomba.create(randomX, 0, randomB)
+  }
+
+  defeat(bomb, platform) {
+    bomb.disableBody(true, true);
+    if (this.defeat) {
+      this.isGameOver = true
+    }
+  } 
 
   updateTimer(){
     this.timer--
