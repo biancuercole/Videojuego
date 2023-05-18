@@ -38,7 +38,6 @@ export default class Game extends Phaser.Scene {
     this.add.image(400, 300, "sky").setScale(0.555);
     // agregado con fisicas 
     this.player = this.physics.add.sprite(400, 500, "player");
-    this.bomb = this.physics.add.sprite(500, 500, "bomb");
     this.platformsGroup = this.physics.add.staticGroup();
     this.platformsGroup.create(400, 568, "platform").setScale(2).refreshBody();
     this.platformsGroup.create(50, 390, "platform").setScale(1).refreshBody();
@@ -47,7 +46,6 @@ export default class Game extends Phaser.Scene {
     this.physics.add.collider(this.player, this.platformsGroup);
     this.physics.add.collider(this.shapesGroup, this.platformsGroup);
     this.physics.add.overlap(this.player, this.shapesGroup, this.collectShape, null, this);
-    this.physics.add.overlap(this.bomb, this.platformsGroup, this.defeat, null, this);
     this.physics.add.overlap(this.shapesGroup, this.platformsGroup, this.reduce, null, this);
     this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -57,6 +55,13 @@ export default class Game extends Phaser.Scene {
       callbackScope: this,
       loop: true,
     }); 
+
+    this.time.addEvent ({
+      delay: 7000,
+      callback: this.dropBomb,
+      callbackScope: this,
+      loop: true,
+    })
 
     //add text score 
     this.scoreText = this.add.text(16, 16, " T: / C: / R: / SCORE: ", {
@@ -133,12 +138,6 @@ export default class Game extends Phaser.Scene {
     }
   }
 
-  defeat(bomba, plataforma){
-    if(this.defeat){
-      this.isGameOver = true;
-    }
-  }
-
   addShape(){
     const randomShape = Phaser.Math.RND.pick(SHAPES);
     const randomX = Phaser.Math.RND.between(0, 800);
@@ -147,6 +146,24 @@ export default class Game extends Phaser.Scene {
     .setBounce(0.8)
     .setData(POINTS_PERCENTAGE, POINTS_PERCENTAGE_VALUE_START);
     console.log("shape is added", randomX, randomShape);
+  }
+
+  dropBomb() {
+    const randomX = Phaser.Math.RND.between(0, 800);
+    const bomb = this.physics.add.sprite(randomX, 0, "bomb");
+    bomb.setGravityY(100);
+    this.physics.add.overlap(bomb, this.platformsGroup, this.defeat, null, this);
+    this.physics.add.overlap(bomb, this.player, this.collectBomb, null, this);
+  }
+
+  defeat(bomb, platform) {
+    if (this.defeat){
+      this.isGameOver = true;
+    }
+  }
+
+  collectBomb(bomb, player){
+    bomb.disableBody(true, true);
   }
 
   updateTimer(){
@@ -168,6 +185,7 @@ export default class Game extends Phaser.Scene {
       shape.disableBody(true,true);
       return;
   }
+
   const text = this.add.text(shape.body.position.x+10, shape.body.position.y, "-25%", {
     fontSize: "22px",
     fontStyle: "bold",
