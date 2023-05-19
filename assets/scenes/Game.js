@@ -68,7 +68,7 @@ export default class Game extends Phaser.Scene {
 
     //evento para agregar la bomba 
     this.time.addEvent ({
-      delay: 10000,
+      delay: 8000,
       callback: this.dropBomb,
       callbackScope: this,
       loop: true,
