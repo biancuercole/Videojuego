@@ -48,7 +48,13 @@ export default class HelpScene extends Phaser.Scene {
             fill: "#E0CDF8",
         }); this.bombaInst.setOrigin(0.5);
 
-        const button = this.add.text(305, 400, "¡Empecemos!", {
+        this.bombaInst = this.add.text(screenWidth / 2, 430, "¡Juntá 2 figuras de cada tipo y sumá 100 puntos para ganar!", {
+            fontSize: "20px",
+            fontFamily: "Verdana",
+            fill: "#E0CDF8",
+        }); this.bombaInst.setOrigin(0.5);
+
+        const button = this.add.text(305, 500, "¡Empecemos!", {
             fontSize: "30px",
             fill: "#E78F8F",
             backgroundColor: "#763D3D",
