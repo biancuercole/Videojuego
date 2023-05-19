@@ -17,11 +17,11 @@ export default class HelpScene extends Phaser.Scene {
     create () {
         const screenWidth = this.cameras.main.width;
         this.add.image(400, 300, "background").setScale(0.555);
-        this.add.image(400, 300, "cruz")
-        this.add.image(400, 300, "triangulo")
-        this.add.image(400, 300, "cuadrado")
-        this.add.image(400, 300, "rombo")
-        this.add.image(400, 300, "bomba")
+        this.add.image(640, 170, "cruz")
+        this.add.image(80, 170, "triangulo")
+        this.add.image(165, 170, "cuadrado")
+        this.add.image(250, 170, "rombo")
+        this.add.image(400, 350, "bomba")
 
         this.instructionsT = this.add.text(screenWidth / 2, 35, "Instrucciones", {
             fontSize: "30px",
@@ -30,7 +30,47 @@ export default class HelpScene extends Phaser.Scene {
             fontWeight: "bold",
         });
         this.instructionsT.setOrigin(0.5);
+        this.shapeInst = this.add.text(80, 100, "Colecta las figuras", {
+            fontSize: "20px",
+            fontFamily: "Verdana",
+            fill: "#E0CDF8",
+        });
 
+        this.cruzInst = this.add.text(520, 100, "Evita juntar las cruces", {
+            fontSize: "20px",
+            fontFamily: "Verdana",
+            fill: "#E0CDF8",
+        });
+
+        this.bombaInst = this.add.text(screenWidth / 2, 300, "¡No dejes que la bomba toque el piso!", {
+            fontSize: "20px",
+            fontFamily: "Verdana",
+            fill: "#E0CDF8",
+        }); this.bombaInst.setOrigin(0.5);
+
+        const button = this.add.text(305, 400, "¡Empecemos!", {
+            fontSize: "30px",
+            fill: "#E78F8F",
+            backgroundColor: "#763D3D",
+            fontFamily: "Arial",
+            fontWeight: "bolder",
+        }).setInteractive();
+
+        button.on("pointerover", () => {
+            button.setBackgroundColor("#693636")
+            this.game.canvas.style.cursor = "pointer"
+        });
+
+        button.on("pointerout", () => {
+            button.setBackgroundColor("#763D3D")
+            this.game.canvas.style.cursor = "default";
+        });
+        
+        button.on("pointerdown", () => {
+            button.setBackgroundColor("#763D3D")
+            this.game.canvas.style.cursor = "default";
+            this.scene.start("game");
+        });
     }
 
     upload () {}

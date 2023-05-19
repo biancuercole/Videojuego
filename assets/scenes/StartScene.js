@@ -46,7 +46,19 @@ export default class StartScene extends Phaser.Scene {
             fontWeight: "bolder",
         }).setInteractive();
 
+        button.on("pointerover", () => {
+            button.setBackgroundColor("#693636")
+            this.game.canvas.style.cursor = "pointer"
+        });
+
+        button.on("pointerout", () => {
+            button.setBackgroundColor("#763D3D")
+            this.game.canvas.style.cursor = "default";
+        });
+        
         button.on("pointerdown", () => {
+            button.setBackgroundColor("#763D3D")
+            this.game.canvas.style.cursor = "default";
             this.scene.start("instructions");
         });
     }

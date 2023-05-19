@@ -31,7 +31,7 @@ const config = {
     },
   },
   // Carga de escenas a la pagina, solo la primera se mostrará enseguida.
-  scene: [Instructions, StartScene, Game,  Winner, GameOver],
+  scene: [ StartScene, Instructions, Winner, GameOver, Game],
 };
 
 // Create a new Phaser game instance
