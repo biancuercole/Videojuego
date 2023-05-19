@@ -29,7 +29,7 @@ export default class Game extends Phaser.Scene {
     this.load.image("player", "./assets/images/Ninja.png");
     this.load.image(TRIANGULO, "./assets/images/Triangulo.png");
     this.load.image(ROMBO, "./assets/images/Rombo.png");
-    this.load.image(CUADRADO, "./assets/images/cuadrado.png");
+    this.load.image(CUADRADO, "./assets/images/Cuadrado.png");
     this.load.image(CRUZ, "./assets/images/Cruz.png");
     this.load.image("bomb", "./assets/images/Bomba.png");
   }
