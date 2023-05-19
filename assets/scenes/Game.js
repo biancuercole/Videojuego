@@ -68,7 +68,7 @@ export default class Game extends Phaser.Scene {
 
     //evento para agregar la bomba 
     this.time.addEvent ({
-      delay: 7000,
+      delay: 15000,
       callback: this.dropBomb,
       callbackScope: this,
       loop: true,
@@ -188,7 +188,7 @@ export default class Game extends Phaser.Scene {
   dropBomb() {
     const randomX = Phaser.Math.RND.between(0, 800);
     const bomb = this.physics.add.sprite(randomX, 0, "bomb");
-    bomb.setGravityY(100);
+    bomb.setGravityY(50);
     this.physics.add.overlap(bomb, this.platformsGroup, this.defeat, null, this);
     this.physics.add.overlap(bomb, this.player, this.collectBomb, null, this);
   }
