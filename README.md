@@ -9,6 +9,6 @@ Cambios adicionales:
 - Se sumó un menú de inicio y una escena de instrucciones antes de comenzar a jugar. 
 - Se agregaron animaciones a las escenas de Game Over y Winner. 
 
-El videojuego estará disponible en el siguiente link: https://biancuercole.github.io/Videojuego/ 
+El videojuego estará disponible en el siguiente link: https://biancuercole.github.io/Videojuego/
 
 Espero que sea de su agrado, y ante cualquier problema no duden en consultarme a mi mail: biancaercole2003@gmail.com.
