@@ -47,7 +47,7 @@ export default class StartScene extends Phaser.Scene {
         }).setInteractive();
 
         button.on("pointerdown", () => {
-            this.scene.start("game");
+            this.scene.start("instructions");
         });
     }
 

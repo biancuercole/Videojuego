@@ -1,5 +1,6 @@
 //Importar archivos del proyecto
 import StartScene from "./assets/scenes/StartScene.js";
+import Instructions from "./assets/scenes/Instructions.js";
 import Game from "./assets/scenes/Game.js";
 import GameOver from "./assets/scenes/GameOver.js";
 import Winner from "./assets/scenes/Winner.js";
@@ -30,7 +31,7 @@ const config = {
     },
   },
   // Carga de escenas a la pagina, solo la primera se mostrará enseguida.
-  scene: [StartScene, Game,  Winner, GameOver],
+  scene: [Instructions, StartScene, Game,  Winner, GameOver],
 };
 
 // Create a new Phaser game instance
